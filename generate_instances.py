@@ -124,7 +124,7 @@ def generate_one_instance_tperiods(data, situations, n_instance, t_periods,
                                    m_A, m_B, m_C):
     dico_players_insti_tperiod = dict()
     for t_period in range(0, t_periods):
-        dico_players_insti_tperiod[t_period] \
+        dico_players_insti_tperiod[csts.PERIOD_ROOT+str(t_period)] \
             = generate_one_period(data=data, situations=situations, 
                                   n_instance=n_instance, 
                                   t_period=t_period,
@@ -132,13 +132,13 @@ def generate_one_instance_tperiods(data, situations, n_instance, t_periods,
     return dico_players_insti_tperiod
 
 
-def generate_n_instances_t_periods(file_name="data1_generation.json", 
+def generate_n_instances_t_periods(filename="data1_generation.json", 
                                    n_instances=10, t_periods=5,
                                    m_A=10, m_B=8, m_C=7, 
                                    path_2_save=""):
      
     # read json file
-    f = open(os.path.join(csts.DATA_ROOT, file_name))
+    f = open(os.path.join(csts.DATA_ROOT, filename))
     data = json.load(f)
     situations = list(data.keys()); situations.sort(reverse=False)
     
@@ -178,14 +178,10 @@ if __name__ == "__main__":
     m_A=10; m_B=8; m_C=7
     
     ti = time.time()
-    # n_instances = 10
     n_instances = 10
-    # generate_n_instances(file_name=json_file, 
-    #                      n_instances=n_instances,
-    #                      m_A=m_A, m_B=m_B, m_C=m_C)
-    
     t_periods = 5
-    generate_n_instances_t_periods(file_name="data1_generation.json", 
+    
+    generate_n_instances_t_periods(filename="data1_generation.json", 
                                    n_instances=n_instances, 
                                    t_periods=t_periods,
                                    m_A=m_A, m_B=m_B, m_C=m_C, 
