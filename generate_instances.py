@@ -60,9 +60,11 @@ def get_values_CidizSiSimax(dico_situat):
     
     return Ci, z, di, Si, Si_max
 
-
-def generate_one_instance(data, situations, n_instance,
-                          m_A=10, m_B=8, m_C=7):
+#______________________________________________________________________________
+#                   test with t_periods: debut 
+#______________________________________________________________________________
+def generate_one_period(data, situations, n_instance, t_period, 
+                        m_A=10, m_B=8, m_C=7):
     cpt_A, cpt_B, cpt_C = 0, 0, 0
     m_players = m_A + m_B + m_C
     
@@ -102,7 +104,7 @@ def generate_one_instance(data, situations, n_instance,
                 if Ci is None or z is None or di is None or Si is None or Si_max is None \
                 else True
         else:
-            print(f"---inst={num_pl}: key={key_situat} Unknown ----")
+            print(f"---inst={num_pl},t={t_period}: key={key_situat} Unknown ----")
             
         dico_players[csts.PLAYER_ROOT+str(num_pl)] = \
                 {"Ci":Ci, "z":z, "di":di, "Si":Si, "Si_max":Si_max, 
@@ -110,18 +112,31 @@ def generate_one_instance(data, situations, n_instance,
                     if lock \
                     else None
             
-    print(f"test_instance_{n_instance}_generated --> OK") \
+    print(f"test_instance_{n_instance}_t_{t_period}_generated --> OK") \
         if m_players == cpt_A + cpt_B + cpt_C \
-        else print(f"test_instance_{n_instance}_generated --> NOK: "+
+        else print(f"test_instance_{n_instance}_t_{t_period}_generated --> NOK: "+
                    f"m_A={m_A} != cpt_A={cpt_A}, m_B={m_B} != cpt_B={cpt_B},"+
                    f" m_C={m_C} != cpt_C={cpt_C}")
         
     return dico_players
+    
+def generate_one_instance_tperiods(data, situations, n_instance, t_periods,
+                                   m_A, m_B, m_C):
+    dico_players_insti_tperiod = dict()
+    for t_period in range(0, t_periods):
+        dico_players_insti_tperiod[t_period] \
+            = generate_one_period(data=data, situations=situations, 
+                                  n_instance=n_instance, 
+                                  t_period=t_period,
+                                  m_A=m_A, m_B=m_B, m_C=m_C)
+    return dico_players_insti_tperiod
 
 
-def generate_n_instances(file_name="data1_generation.json", n_instances=10,
-                         m_A=10, m_B=8, m_C=7, 
-                         path_2_save=""):
+def generate_n_instances_t_periods(file_name="data1_generation.json", 
+                                   n_instances=10, t_periods=5,
+                                   m_A=10, m_B=8, m_C=7, 
+                                   path_2_save=""):
+     
     # read json file
     f = open(os.path.join(csts.DATA_ROOT, file_name))
     data = json.load(f)
@@ -130,23 +145,33 @@ def generate_n_instances(file_name="data1_generation.json", n_instances=10,
     with h5py.File(
             os.path.join(csts.DATA_ROOT, 
                          f'data_{n_instances}_instances.hdf5'), 'w') as f:
-        for n_instance in range(n_instances):
-            dico_players_inst = dict()
-            dico_players_inst = generate_one_instance(
-                                    data=data, situations=situations, 
-                                    n_instance=n_instance,
-                                    m_A=m_A, m_B=m_B, m_C=m_C)
-            json_players_inst = json.dumps(dico_players_inst, indent=4)
-            
+        for n_instance in range(0, n_instances):
+            dico_players_insti_tperiods = dict()
+            dico_players_insti_tperiods = generate_one_instance_tperiods(
+                                            data=data,
+                                            situations=situations, 
+                                            n_instance=n_instance,
+                                            t_periods=t_periods,
+                                            m_A=m_A, m_B=m_B, m_C=m_C)
+            json_players_insti_tperiods = json.dumps(dico_players_insti_tperiods, 
+                                                     indent=4)
             # save to json or h5
-            with open(os.path.join(csts.DATA_ROOT,
-                                   f'data_instance_{n_instance}.json'), 'w') as fp:
-                json.dump(dico_players_inst, fp)
+            with open(os.path.join(
+                        csts.DATA_ROOT,
+                        f'data_instance_{n_instance}_tperiods_{t_periods}.json'), 
+                    'w') as fp:
+                json.dump(json_players_insti_tperiods, fp)
                 
             # insert to h5py, hdf5
-            dset = f.create_dataset(f'data_instance_{n_instance}', 
-                                    data=json_players_inst
-                                    )
+            dset = f.create_dataset(
+                    f'data_instance_{n_instance}_tperiods_{t_periods}.json', 
+                    data=json_players_insti_tperiods
+                    )
+    
+#______________________________________________________________________________
+#                   test with t_periods: fin 
+#______________________________________________________________________________
+
     
 if __name__ == "__main__":
     json_file = "data1_generation.json"
@@ -155,9 +180,16 @@ if __name__ == "__main__":
     ti = time.time()
     # n_instances = 10
     n_instances = 10
-    generate_n_instances(file_name=json_file, 
-                         n_instances=n_instances,
-                         m_A=m_A, m_B=m_B, m_C=m_C)
+    # generate_n_instances(file_name=json_file, 
+    #                      n_instances=n_instances,
+    #                      m_A=m_A, m_B=m_B, m_C=m_C)
+    
+    t_periods = 5
+    generate_n_instances_t_periods(file_name="data1_generation.json", 
+                                   n_instances=n_instances, 
+                                   t_periods=t_periods,
+                                   m_A=m_A, m_B=m_B, m_C=m_C, 
+                                   path_2_save="")
     
     print(f"Runtime = {time.time()-ti}")
 
