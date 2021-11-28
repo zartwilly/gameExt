@@ -61,7 +61,7 @@ def get_values_CidizSiSimax(dico_situat):
     return Ci, z, di, Si, Si_max
 
 #______________________________________________________________________________
-#                   test with t_periods: debut 
+#               generate n instanaces with t_periods periods: debut 
 #______________________________________________________________________________
 def generate_one_period(data, situations, n_instance, t_period, 
                         m_A=10, m_B=8, m_C=7):
@@ -169,7 +169,7 @@ def generate_n_instances_t_periods(file_name="data1_generation.json",
                     )
     
 #______________________________________________________________________________
-#                   test with t_periods: fin 
+#           generate n instanaces with t_periods periods: fin 
 #______________________________________________________________________________
 
     
