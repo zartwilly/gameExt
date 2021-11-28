@@ -11,3 +11,5 @@ DATA_ROOT = "data"
 SITUATION_ERR = "Situation_Error"
 
 PLAYER_ROOT = "player_"
+
+PERIOD_ROOT = "t_"
