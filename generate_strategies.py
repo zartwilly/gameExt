@@ -52,7 +52,7 @@ def add_fields_players(dico_data):
 #______________________________________________________________________________
 #                       generation of strategies: debut 
 #______________________________________________________________________________
-def compute_strategies_onePlayer(dico_values):
+def compute_strategies_onePlayer(dico_values, m_players):
     """
     this fonction adds one field "strategies" to dico_values
     for example:
@@ -75,8 +75,16 @@ def compute_strategies_onePlayer(dico_values):
             modes = csts.STATE3_STRATS
             possibles_strategies.extend( list(it.product([Pi], [state_i], modes)) )
             
-    dico_values["strategies"] = possibles_strategies
-    
+    # compute probability of each player
+    possibles_strategies_probs = []
+    for i, tuple_comb in enumerate(possibles_strategies):
+        dico_values[csts.PROB_NAME+str(i)] \
+            = round( len(possibles_strategies) / m_players, 4 )
+        list_comb = list(tuple_comb)
+        list_comb.append(csts.PROB_NAME+str(i))
+        possibles_strategies_probs.append( tuple(list_comb) )
+        
+    dico_values["strategies"] = possibles_strategies_probs
     return dico_values
             
 def generation_strategies(dico_data, t_period=2):
@@ -86,8 +94,10 @@ def generation_strategies(dico_data, t_period=2):
 
     """
     dico_data_t = dico_data[csts.PERIOD_ROOT+str(t_period)]
+    m_players = len( list(dico_data_t.keys()) )
     for player_name, dico_values in dico_data_t.items():
-        dico_values = compute_strategies_onePlayer(dico_values)
+        dico_values = compute_strategies_onePlayer(dico_values=dico_values, 
+                                                   m_players=m_players)
         
     return  dico_data_t
         
