@@ -78,8 +78,8 @@ def compute_strategies_onePlayer(dico_values, m_players):
     # compute probability of each player
     possibles_strategies_probs = []
     for i, tuple_comb in enumerate(possibles_strategies):
-        dico_values[csts.PROB_NAME+str(i)] \
-            = round( len(possibles_strategies) / m_players, 4 )
+        dico_values[csts.PROB_NAME+str(i)+"s"] \
+            = [round( len(possibles_strategies) / m_players, 4 )]
         list_comb = list(tuple_comb)
         list_comb.append(csts.PROB_NAME+str(i))
         possibles_strategies_probs.append( tuple(list_comb) )
