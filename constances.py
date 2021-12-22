@@ -18,6 +18,8 @@ PLAYER_ROOT = "player_"
 
 PERIOD_ROOT = "t_"
 PROB_NAME = "p_"
+# save all values of bg for k_step <-0 to n even if k_step is repeated N times (N<10)
+BG_ALL_VALUES = "bg_all_is"
 
 #______________________________________________________________________________
 #                       Suffixes variables: fin
@@ -27,7 +29,8 @@ PROB_NAME = "p_"
 #                       valeurs constantes: debut 
 #______________________________________________________________________________
 ARRONDI = 7
-
+MAX_REPEATED_KSTEP = 10
+MAX_STRATEGY_PROBA = 0.9
 #______________________________________________________________________________
 #                       valeurs constantes: fin 
 #______________________________________________________________________________
@@ -58,7 +61,7 @@ LEARNING_PROPERTIES = ["mode_is","state_is", "P_is", "k_steps",
                        "pp_t_is", "gamma_is", "q_minus_is", "q_plus_is", 
                       "prod_is", "cons_is", "r_is", 
                       "ben_is", "cst_is", "V_is", "u_is", 
-                      "bg_is", "bgr_is", "bg_min_is", "bg_max_is",
+                      "bg_is", "bgr_is", "bg_min_is", "bg_max_is", BG_ALL_VALUES, 
                       "c0_s", "b0_s", "pi_0_plus_s", "pi_0_minus_s",
                       "is_playing"]
 
