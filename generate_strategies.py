@@ -43,6 +43,8 @@ def add_fields_players(dico_data):
             for propertie in csts.LEARNING_PROPERTIES:
                 if propertie == "S_t_plus_1_is":
                     dico_values[propertie] = [dico_values["Si"]]
+                elif propertie == "is_playing":
+                    dico_values[propertie] = [True]
                 else:
                     dico_values[propertie] = []
                 
