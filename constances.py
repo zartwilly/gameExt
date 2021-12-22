@@ -53,11 +53,13 @@ STATE3_STRATS = ("DIS", "PROD")                                                #
 """
 bgr_is = BG_r_i
 """
-LEARNING_PROPERTIES = ["mode_is","state_is", "P_is", "ksteps",
+LEARNING_PROPERTIES = ["mode_is","state_is", "P_is", "k_steps",
                        "S_t_plus_1_is", "S_minus_is", "S_plus_is", 
-                       "pp_is", "gamma_is", "q_minus_is", "q_plus_is", 
+                       "pp_t_is", "gamma_is", "q_minus_is", "q_plus_is", 
                       "prod_is", "cons_is", "r_is", 
-                      "ben_is", "cst_is", "V_is", "u_is", "bg_is", "bgr_is", 
+                      "ben_is", "cst_is", "V_is", "u_is", 
+                      "bg_is", "bgr_is", "bg_min_is", "bg_max_is",
+                      "c0_s", "b0_s", "pi_0_plus_s", "pi_0_minus_s",
                       "is_playing"]
 
 #______________________________________________________________________________
