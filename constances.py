@@ -21,6 +21,9 @@ PROB_NAME = "p_"
 # save all values of bg for k_step <-0 to n even if k_step is repeated N times (N<10)
 BG_ALL_VALUES = "bg_all_is"
 
+PATH_ROOT = "simulation"
+INSTANCE_ROOT = "instance"
+
 #______________________________________________________________________________
 #                       Suffixes variables: fin
 #______________________________________________________________________________
@@ -63,6 +66,7 @@ LEARNING_PROPERTIES = ["mode_is","state_is", "P_is", "k_steps",
                       "ben_is", "cst_is", "V_is", "u_is", 
                       "bg_is", "bgr_is", "bg_min_is", "bg_max_is", BG_ALL_VALUES, 
                       "c0_s", "b0_s", "pi_0_plus_s", "pi_0_minus_s",
+                      "beta_sg_t_minus_1_minus_is", "beta_sg_t_minus_1_plus_is",
                       "is_playing"]
 
 #______________________________________________________________________________
