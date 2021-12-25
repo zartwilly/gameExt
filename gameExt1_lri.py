@@ -1260,6 +1260,9 @@ def test_gameExt1(args):
         = gene_strats.generation_strategies_tperiods(
             dico_data=dico_insti_tperiods_players, 
             t_periods=args['t_periods'])
+        
+    game_ext1(dico_tperiods_players=dico_insti_tperiods_players, 
+              args=args)
     pass
 #______________________________________________________________________________
 #                       test : fin
