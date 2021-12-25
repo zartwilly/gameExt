@@ -1210,6 +1210,7 @@ def game_ext1(dico_tperiods_players, args):
             k_step, cpt_repeated_kstep \
                 = execute_one_learning_step_4_one_period(
                     dico_tperiods_players=dico_tperiods_players, 
+                    dico_chosen_strats_t=dico_chosen_strats_t,
                     t_period=t_period, 
                     k_step=k_step,
                     cpt_repeated_kstep=cpt_repeated_kstep,
