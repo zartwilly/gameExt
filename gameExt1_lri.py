@@ -311,7 +311,7 @@ def compute_beta_sg(t_period, dico_chosen_strats_t,
     else:
         sum_T_diff_plus, sum_T_diff_minus = 0, 0
         sum_T_prod, sum_T_cons = 0, 0
-        for t in range(0, int(t_period.split("_")[0] )):
+        for t in range(0, int(t_period.split("_")[1] )):
             sum_N_cons_i = 0; sum_N_prod_i = 0
             for player_i, dico_values in dico_chosen_strats_t[t].items():
                 prod_i = dico_chosen_strats_t[t][player_i]["prod_i"]
