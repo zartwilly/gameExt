@@ -867,8 +867,12 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
     phi_EPO_minus = compute_phi_EPO_minus(q_minus_k=q_minus_k, 
                                           quantity=args["quantity_b"], 
                                           b=args["b"])
-    pi_EPO_plus = round(phi_EPO_plus/q_plus_k, csts.ARRONDI)
-    pi_EPO_minus = round(phi_EPO_minus/q_minus_k, csts.ARRONDI)
+    pi_EPO_plus = round(phi_EPO_plus/q_plus_k, csts.ARRONDI) \
+                    if q_plus_k > 0 \
+                    else 0
+    pi_EPO_minus = round(phi_EPO_minus/q_minus_k, csts.ARRONDI) \
+                    if q_minus_k > 0 \
+                    else 0
     
     beta_sg_t_minus_1_plus, beta_sg_t_minus_1_minus \
         = compute_beta_sg(t_period=t_period, 
