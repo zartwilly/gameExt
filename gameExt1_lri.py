@@ -527,7 +527,7 @@ def compute_gamma_Siplusminus_ImM_OmM_bencstis(dico_chosen_strats_k,
 #______________________________________________________________________________  
 def compute_bg(dico_chosen_strats_k, dico_tperiods_players, t_period, c0_M):
     """
-    determine bg, bg_i_min, bg_i_max
+    determine bg, bg_min_i, bg_max_i
     dico_chosen_strats_k[player_i] = {"strategy_name_i":, 
                                       "q_plus_k_i":, "q_minus_k_i":,
                                       "P_t_plus_1_i":, "C_t_plus_1_i": ,
@@ -580,8 +580,8 @@ def compute_bg(dico_chosen_strats_k, dico_tperiods_players, t_period, c0_M):
         if bg_max_i is None or bg_max_i < bg_i:
             bg_max_i = bg_i
         
-        dico_chosen_strats_k[player_i]["bg_i_min"] = bg_min_i
-        dico_chosen_strats_k[player_i]["bg_i_max"] = bg_max_i
+        dico_chosen_strats_k[player_i]["bg_min_i"] = bg_min_i
+        dico_chosen_strats_k[player_i]["bg_max_i"] = bg_max_i
         
     return dico_chosen_strats_k
 
@@ -611,7 +611,7 @@ def compute_utility_fonction_ui(dico_chosen_strats_k,
                                       "pi_0_plus": , "pi_0_minus": , 
                                       "beta_sg_t_minus_1_minus":,
                                       "beta_sg_t_minus_1_plus":,
-                                      "bg_i":, 'bg_i_min':, 'bg_i_max':, 
+                                      "bg_i":, 'bg_min_i':, 'bg_max_i':, 
                                     }
     dico_tperiods_players = {"t_j":{'player_i':dico_t_player_i, 
                                         'player_i+1':dico_t_player_i+1,
