@@ -240,6 +240,7 @@ def choose_strategy_4_all_players(dico_tperiods_players, t_period):
                                     [t_period][player_i][x][-1],
                         keys_probas) 
                     )
+            #print("proba = {}".format( list(zip(keys_probas,vals_probas)) ))
             
             strategy_name_i = np.random.choice(keys_probas, p=vals_probas)
             dico_PiStateiModei = dico_tperiods_players\
@@ -687,7 +688,8 @@ def update_probabilities_pXs(dico_chosen_strats_k,
                            values=[values' list of LEARNING_PROPERTIES]}
     
     """
-    
+    is_all_strategy_probas_sup_SEUIL = False
+    cpt_all_strategy_probas = 0
     for player_i in dico_chosen_strats_k.keys():
         u_i = dico_chosen_strats_k[player_i]["u_i"]
         strategy_name_i = dico_chosen_strats_k[player_i]["strategy_name_i"]
@@ -699,6 +701,10 @@ def update_probabilities_pXs(dico_chosen_strats_k,
         
         is_playing = True if p_X_new < csts.MAX_STRATEGY_PROBA else False
         dico_chosen_strats_k[player_i]["is_playing"] = is_playing
+        
+        cpt_all_strategy_probas += 1 if p_X_new >= csts.MAX_STRATEGY_PROBA else 0
+        
+        print(f"------> {player_i} strategy_name_i {strategy_name_i} = {p_X_new}")
         
         # reduce remain strategies to  p_X_new
         # strats = {1,2,3,4,5,6}, X in starts
@@ -731,9 +737,20 @@ def update_probabilities_pXs(dico_chosen_strats_k,
                     [t_period][player_i]\
                     [no_choose_strategy_name_i][-1]
             p_y_new = p_y - increasing_val / len(Y)
+            """
+            faire une repartition des probas selon leur poids
+            """
+            p_y_new = p_y_new if p_y_new >= 0 else 0
             dico_chosen_strats_k[player_i][no_choose_strategy_name_i] = p_y_new
+            
+            print(f"---> {no_choose_strategy_name_i} = {p_y_new}")
                 
-    return dico_chosen_strats_k
+            
+    is_all_strategy_probas_sup_SEUIL = True \
+        if cpt_all_strategy_probas >= len(dico_chosen_strats_k.keys()) \
+        else False
+    
+    return dico_chosen_strats_k, is_all_strategy_probas_sup_SEUIL
 
 #______________________________________________________________________________
 #          update p_Xs
@@ -964,9 +981,10 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
             )
 
     # update probabilities in case of all u_i are different to None
+    is_all_strategy_probas_sup_SEUIL = False
     if bool_is_One_Ui_None == False \
         or cpt_repeated_kstep >= csts.MAX_REPEATED_KSTEP-1:
-        dico_chosen_strats_k \
+        dico_chosen_strats_k, is_all_strategy_probas_sup_SEUIL \
             = update_probabilities_pXs(
                 dico_chosen_strats_k=dico_chosen_strats_k, 
                 dico_tperiods_players=dico_tperiods_players, 
@@ -983,7 +1001,10 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
                 k_step=k_step,
                 is_repeated_kstep=is_repeated_kstep)
             
-        k_step += 1
+        if is_all_strategy_probas_sup_SEUIL:
+            k_step = args['k_step']
+        else:
+            k_step += 1
         cpt_repeated_kstep = csts.MAX_REPEATED_KSTEP
         
     else:
@@ -1007,7 +1028,7 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
     dico_chosen_strats_t[t_period] = dico_chosen_strats_k
     
     return dico_tperiods_players, dico_chosen_strats_t, \
-            k_step, cpt_repeated_kstep
+            k_step, cpt_repeated_kstep, is_all_strategy_probas_sup_SEUIL
     
 #______________________________________________________________________________
 #          execute one learning step
@@ -1243,10 +1264,12 @@ def game_ext1(dico_tperiods_players, args):
         
         k_step = 0; cpt_repeated_kstep = 0
         while k_step < args["k_steps"] \
-                and cpt_repeated_kstep < csts.MAX_REPEATED_KSTEP:
-                    
+                or cpt_repeated_kstep < csts.MAX_REPEATED_KSTEP:
+            
+            k_step_res = None
             dico_tperiods_players, dico_chosen_strats_t, \
-            k_step, cpt_repeated_kstep \
+            k_step_res, cpt_repeated_kstep, \
+            is_all_strategy_probas_sup_SEUIL \
                 = execute_one_learning_step_4_one_period(
                     dico_tperiods_players=dico_tperiods_players, 
                     dico_chosen_strats_t=dico_chosen_strats_t,
@@ -1255,8 +1278,9 @@ def game_ext1(dico_tperiods_players, args):
                     cpt_repeated_kstep=cpt_repeated_kstep,
                     args=args
                     )
+            k_step = k_step_res
                 
-            print(f"{t_period}, k_step={k_step}")
+            print(f"{t_period}, k_step={k_step}, cpt_repeated={cpt_repeated_kstep}")
                 
         # pass the remaining stock at t to the new stock at t+1 
         dico_tperiods_players, liste_players \
