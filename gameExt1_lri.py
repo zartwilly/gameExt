@@ -1150,28 +1150,28 @@ def save_learning_variables(dico_tperiods_players, dico_chosen_strats_t,
     """
     Path(path_2_save).mkdir(parents=True, exist_ok=True)
     # save to json dico_tperiods_players
-    with open(os.path.join(csts.PATH_ROOT,'data_tperiods_players.json'), 'w') \
+    with open(os.path.join(path_2_save,'data_tperiods_players.json'), 'w') \
         as fp:
         json.dump(dico_tperiods_players, fp, cls=SetEncoder)
         
     # save to json dico_chosen_strats_t
-    with open(os.path.join(csts.PATH_ROOT,'data_chosen_strategy_4_players.json'), 
+    with open(os.path.join(path_2_save,'data_chosen_strategy_4_players.json'), 
               'w') \
         as fp:
         json.dump(dico_chosen_strats_t, fp)
         
     # save to json dico_IB_IC_Perft
-    with open(os.path.join(csts.PATH_ROOT,'data_players_IB_IC_Perft.json'), 'w') \
+    with open(os.path.join(path_2_save,'data_players_IB_IC_Perft.json'), 'w') \
         as fp:
         json.dump(dico_IB_IC_Perft, fp)
     
     # save to json dico_Perft
-    with open(os.path.join(csts.PATH_ROOT,'data_tperiods_Perft.json'), 'w') \
+    with open(os.path.join(path_2_save,'data_tperiods_Perft.json'), 'w') \
         as fp:
         json.dump(dico_Perft, fp)
         
     # save to json dico_VR_APerf
-    with open(os.path.join(csts.PATH_ROOT,'data_VR_Perft.json'), 'w') \
+    with open(os.path.join(path_2_save,'data_VR_Perft.json'), 'w') \
         as fp:
         json.dump(dico_VR_APerf, fp)
         
@@ -1188,7 +1188,7 @@ def save_learning_variables(dico_tperiods_players, dico_chosen_strats_t,
            ("data_VR_Perft", json.dumps(dico_VR_APerf, indent=4, cls=SetEncoder))
           ]
     with h5py.File(
-            os.path.join(csts.DATA_ROOT, 
+            os.path.join( path_2_save,
                          f'data_{n_instances}_instances.hdf5'), 'w') as f:
         for (id_json, json_data) in liste_tup_jsonDico:
             f.create_dataset(id_json, data=json_data)
