@@ -45,6 +45,8 @@ def add_fields_players(dico_data):
                     dico_values[propertie] = [dico_values["Si"]]
                 elif propertie == "is_playing":
                     dico_values[propertie] = [True]
+                elif propertie == csts.BG_ALL_VALUES:
+                    dico_values[propertie] = set()
                 else:
                     dico_values[propertie] = []
                 
