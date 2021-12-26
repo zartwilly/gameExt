@@ -67,7 +67,7 @@ LEARNING_PROPERTIES = ["mode_is","state_is", "P_is", "k_steps",
                       "bg_is", "bgr_is", "bg_min_is", "bg_max_is", BG_ALL_VALUES, 
                       "c0_s", "b0_s", "pi_0_plus_s", "pi_0_minus_s",
                       "beta_sg_t_minus_1_minus_is", "beta_sg_t_minus_1_plus_is",
-                      "is_playing"]
+                      "is_playing", "strategy_name_is"]
 
 #______________________________________________________________________________
 #                    variables communes a tous les joueurs: fin
