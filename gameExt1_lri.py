@@ -800,6 +800,9 @@ def update_learning_variables(dico_chosen_strats_k,
         is_playing = dico_chosen_strats_k[player_i]["is_playing"] \
             if is_repeated_kstep == False \
             else True
+            
+        strategy_name_i = dico_chosen_strats_k[player_i]["strategy_name_i"]
+        
         
         c0 = dico_chosen_strats_k[player_i]["c0"]
         b0 = dico_chosen_strats_k[player_i]["b0"]
@@ -825,12 +828,26 @@ def update_learning_variables(dico_chosen_strats_k,
                       ("beta_sg_t_minus_1_minus_is", beta_sg_t_minus_1_minus),
                       ("beta_sg_t_minus_1_plus_is", beta_sg_t_minus_1_plus)
                       ]
+        
                       
         if is_repeated_kstep:
             var_i = csts.BG_ALL_VALUES
             val_i = bg_i
             dico_tperiods_players[t_period][player_i][var_i].add(val_i)
         else:
+            keys_probas = list(
+                    filter(lambda x: x.startswith(csts.PROB_NAME), 
+                           list(dico_tperiods_players[t_period][player_i].keys()) 
+                          )
+                    )
+            val_P_Xs = list( 
+                        map(lambda x: dico_chosen_strats_k\
+                                        [player_i][x],
+                            keys_probas) 
+                        )
+            tuples_P_Xs = zip(keys_probas, val_P_Xs)
+            vars_2_add.extend(list(tuples_P_Xs))
+            
             for var_i, val_i in vars_2_add:
                 if var_i != csts.BG_ALL_VALUES:
                     dico_tperiods_players[t_period][player_i][var_i].append(val_i)
@@ -1238,6 +1255,8 @@ def game_ext1(dico_tperiods_players, args):
                     args=args
                     )
                 
+            print(f"{t_period}, k_step={k_step}")
+                
         # pass the remaining stock at t to the new stock at t+1 
         dico_tperiods_players, liste_players \
             = send_residual_stock_2_next_period(
@@ -1245,6 +1264,8 @@ def game_ext1(dico_tperiods_players, args):
                 t_period=t_period, 
                 args=args)
         # TODO : TO THINK- save each kstep or each t_period
+        
+        print(f"LAST k_step = {k_step}")
         
     # compute IB, IC, EB_i, EC_i
     dico_IB_IC_Perft, dico_Perft, dico_VR_APerf \
