@@ -306,16 +306,17 @@ def compute_beta_sg(t_period, dico_chosen_strats_t,
     """
     dico_chosen_t_strats = {"t_0":{"player_0":{ ... } }}
     """
-    if t_period == 0:
+    if t_period == csts.PERIOD_ROOT + str(t_period.split("_")[1]):
         return beta_sg_0_minus, beta_sg_0_plus
     else:
         sum_T_diff_plus, sum_T_diff_minus = 0, 0
         sum_T_prod, sum_T_cons = 0, 0
         for t in range(0, int(t_period.split("_")[1] )):
+            t_ = csts.PERIOD_ROOT + str(t)
             sum_N_cons_i = 0; sum_N_prod_i = 0
-            for player_i, dico_values in dico_chosen_strats_t[t].items():
-                prod_i = dico_chosen_strats_t[t][player_i]["prod_i"]
-                cons_i = dico_chosen_strats_t[t][player_i]["cons_i"]
+            for player_i, dico_values in dico_chosen_strats_t[t_].items():
+                prod_i = dico_chosen_strats_t[t_][player_i]["prod_i"]
+                cons_i = dico_chosen_strats_t[t_][player_i]["cons_i"]
                 
                 sum_N_cons_i += cons_i
                 sum_N_prod_i += prod_i
@@ -805,7 +806,7 @@ def update_learning_variables(dico_chosen_strats_k,
         beta_sg_t_minus_1_minus = dico_chosen_strats_k[player_i]["beta_sg_t_minus_1_minus"]
         beta_sg_t_minus_1_plus = dico_chosen_strats_k[player_i]["beta_sg_t_minus_1_plus"]
         
-        vars_2_add = [("mode_is", mode_i), ("state_i", state_i),
+        vars_2_add = [("mode_is", mode_i), ("state_is", state_i),
                       ("P_is", Pi), ("S_t_plus_1_is", S_t_plus_1_i), 
                       ("k_steps", k_step),
                       ("S_minus_is", S_minus_i), ("S_plus_is", S_plus_i), 
