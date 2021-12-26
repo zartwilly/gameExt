@@ -464,14 +464,16 @@ def compute_gamma_Siplusminus_ImM_OmM_bencstis(dico_chosen_strats_k,
                                             Si_max=Si_max, 
                                             Si=Si, Ci=Ci, Pi=Pi)
         # compute I_m, I_M, O_m, O_M
-        I_m = Ii_m if Ii_m is None else I_m + Ii_m
-        I_M = Ii_M if Ii_M is None else I_M + Ii_M
-        O_m = Oi_m if Oi_m is None else O_m + Oi_m
-        O_M = Oi_M if Oi_M is None else O_M + Oi_M
+        I_m = I_m if Ii_m is None else I_m + Ii_m
+        I_M = I_M if Ii_M is None else I_M + Ii_M
+        O_m = O_m if Oi_m is None else O_m + Oi_m
+        O_M = O_M if Oi_M is None else O_M + Oi_M
         
         # verification condition 
         assert S_minus_i <= S_minus_i
-        print(f'{player_i} => S_minus_i = {S_minus_i} <= S_minus_i={S_minus_i}')
+        print(f'{player_i} => {state_i} S_minus_i = {S_minus_i} <= S_minus_i={S_minus_i}')
+        print(f'----> Ii_m={Ii_m}, Ii_M={Ii_M}, Oi_m={Oi_m}, Oi_M={Oi_M}')
+        print(f'----> I_m={I_m}, I_M={I_M}, O_m={O_m}, O_M={O_M}')
         
         
         # compute ppi_t
