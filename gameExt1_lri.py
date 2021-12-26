@@ -570,7 +570,9 @@ def compute_bg(dico_chosen_strats_k, dico_tperiods_players, t_period, c0_M):
         bg_min_i, bg_max_i = None, None
         bg_values = dico_tperiods_players[t_period][player_i]\
                                            .get(csts.BG_ALL_VALUES)
-        print(f"{player_i} bg_values = {bg_values}")
+                                           
+        # TODO A SUPPRIMER LE commentaire PRINT
+        #print(f"{player_i} bg_values = {bg_values}")
         
         bg_min_i = min(bg_values) if len(bg_values) != 0 else None
         bg_max_i = max(bg_values) if len(bg_values) != 0 else None
@@ -922,7 +924,7 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
     # compute c0_M
     frac_cOM = round(((O_M - I_m)*pi_EPO_minus + I_M*pi_0_minus)/O_m, 
                       csts.ARRONDI)
-    # TODO a voir avec Dominique c0_M = MIN(frac_cOM, pi_0_minus)
+    # TODO ----> IMPORTANT a voir avec Dominique c0_M = MIN(frac_cOM, pi_0_minus)
     c0_M = max(frac_cOM, pi_0_minus)
     print(f'c0={c0}, c0_M={c0_M}, frac_cOM={frac_cOM}')
     assert c0 <= c0_M
@@ -1130,6 +1132,14 @@ def compute_IB_IC_Perft(dico_tperiods_players, dico_chosen_strats_t,
 #                   save learning variables
 #                           debut
 #______________________________________________________________________________
+class SetEncoder(json.JSONEncoder):
+    def default(self, obj):
+       if isinstance(obj, set):
+          return list(obj)
+       # if isinstance(obj, Something):
+       #    return 'CustomSomethingRepresentation'
+       return json.JSONEncoder.default(self, obj)
+
 def save_learning_variables(dico_tperiods_players, dico_chosen_strats_t,
                             dico_IB_IC_Perft, dico_Perft, dico_VR_APerf, 
                             path_2_save):
@@ -1142,7 +1152,7 @@ def save_learning_variables(dico_tperiods_players, dico_chosen_strats_t,
     # save to json dico_tperiods_players
     with open(os.path.join(csts.PATH_ROOT,'data_tperiods_players.json'), 'w') \
         as fp:
-        json.dump(dico_tperiods_players, fp)
+        json.dump(dico_tperiods_players, fp, cls=SetEncoder)
         
     # save to json dico_chosen_strats_t
     with open(os.path.join(csts.PATH_ROOT,'data_chosen_strategy_4_players.json'), 
@@ -1169,13 +1179,13 @@ def save_learning_variables(dico_tperiods_players, dico_chosen_strats_t,
     # save all dicos to hdf5
     liste_tup_jsonDico \
         = [("data_tperiods_players", 
-            json.dumps(dico_tperiods_players, indent=4)), 
+            json.dumps(dico_tperiods_players, indent=4, cls=SetEncoder)), 
            ("data_chosen_strategy_4_players", 
-            json.dumps(dico_chosen_strats_t, indent=4)), 
+            json.dumps(dico_chosen_strats_t, indent=4, cls=SetEncoder)), 
            ("data_players_IB_IC_Perft",
-            json.dumps(dico_IB_IC_Perft, indent=4)),
-           ("data_tperiods_Perft", json.dumps(dico_Perft, indent=4)), 
-           ("data_VR_Perft", json.dumps(dico_VR_APerf, indent=4))
+            json.dumps(dico_IB_IC_Perft, indent=4, cls=SetEncoder)),
+           ("data_tperiods_Perft", json.dumps(dico_Perft, indent=4, cls=SetEncoder)), 
+           ("data_VR_Perft", json.dumps(dico_VR_APerf, indent=4, cls=SetEncoder))
           ]
     with h5py.File(
             os.path.join(csts.DATA_ROOT, 
