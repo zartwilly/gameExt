@@ -471,10 +471,6 @@ def compute_gamma_Siplusminus_ImM_OmM_bencstis(dico_chosen_strats_k,
         
         # verification condition 
         assert S_minus_i <= S_minus_i
-        print(f'{player_i} => {state_i} S_minus_i = {S_minus_i} <= S_minus_i={S_minus_i}')
-        print(f'----> Ii_m={Ii_m}, Ii_M={Ii_M}, Oi_m={Oi_m}, Oi_M={Oi_M}')
-        print(f'----> I_m={I_m}, I_M={I_M}, O_m={O_m}, O_M={O_M}')
-        
         
         # compute ppi_t
         P_t_plus_1_i = dico_chosen_strats_k[player_i]["P_t_plus_1_i"]
@@ -919,14 +915,15 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
             b0=b0, c0=c0
             )
     
-    assert In_sg_k >= I_m and In_sg_k <= I_m
-    assert Out_sg_k >= O_m and Out_sg_k <= O_m
+    assert In_sg_k >= I_m and In_sg_k <= I_M
+    assert Out_sg_k >= O_m and Out_sg_k <= O_M
 
     # compute c0_M
-    c0_M = min(
-            round(((O_M - I_m)*pi_EPO_minus + I_M*pi_0_minus)/O_m, 
-                      csts.ARRONDI), 
-            pi_0_minus)
+    frac_cOM = round(((O_M - I_m)*pi_EPO_minus + I_M*pi_0_minus)/O_m, 
+                      csts.ARRONDI)
+    # TODO a voir avec Dominique c0_M = MIN(frac_cOM, pi_0_minus)
+    c0_M = max(frac_cOM, pi_0_minus)
+    print(f'c0={c0}, c0_M={c0_M}, frac_cOM={frac_cOM}')
     assert c0 <= c0_M
     
     # compute bg for all players
