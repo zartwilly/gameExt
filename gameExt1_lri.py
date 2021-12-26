@@ -390,6 +390,7 @@ def compute_b0_c0(pi_0_plus, pi_0_minus, Out_sg_k, In_sg_k,
 def compute_Si_plusminus_ImM_OmM(state_i, Si_max, Si, Ci, Pi):
     """
     compute S_plus_i, S_minus_i and also Ii_m, Ii_M, Oi_m, Oi_M 
+    
     """
     S_plus_i, S_minus_i = None, None
     Ii_m, Ii_M, Oi_m, Oi_M = None, None, None, None
@@ -442,6 +443,8 @@ def compute_gamma_Siplusminus_ImM_OmM_bencstis(dico_chosen_strats_k,
         player_ = 'player_i' with i = {0,1,..., M} and 
         dico_t_player_i = {keys=csts.LEARNING_PROPERTIES, 
                            values=[values' list of LEARNING_PROPERTIES]}
+                                   
+    NB : if  S_plus_i == S_minus_i then frac \in [0.01, 0.1]
     """
     I_m, I_M, O_m, O_M = 0, 0, 0, 0
     for player_i, dico_strats in dico_chosen_strats_k.items():
@@ -468,20 +471,20 @@ def compute_gamma_Siplusminus_ImM_OmM_bencstis(dico_chosen_strats_k,
         
         # verification condition 
         assert S_minus_i <= S_minus_i
+        print(f'{player_i} => S_minus_i = {S_minus_i} <= S_minus_i={S_minus_i}')
         
         
         # compute ppi_t
         P_t_plus_1_i = dico_chosen_strats_k[player_i]["P_t_plus_1_i"]
         C_t_plus_1_i = dico_chosen_strats_k[player_i]["C_t_plus_1_i"]
         if pp_t_i is None:
-            pp_t_i = math.sqrt( min (1, 
-                                    fct_aux.diff_positive(
-                                        fct_aux.diff_positive(C_t_plus_1_i,
-                                                               P_t_plus_1_i),
-                                        S_minus_i) / \
-                                        S_plus_i - S_minus_i
-                                    )
-                              )
+            frac \
+                = fct_aux.diff_positive(
+                    fct_aux.diff_positive(C_t_plus_1_i, P_t_plus_1_i), 
+                    S_minus_i) / (S_plus_i - S_minus_i) \
+                if S_minus_i != S_minus_i \
+                else np.random.uniform(low=0.01, high=0.1)
+            pp_t_i = math.sqrt( min(1, frac) )
                 
         # compute gamma
         rd_draw = np.random.uniform(low=0.0, high=1.0, size=None)
