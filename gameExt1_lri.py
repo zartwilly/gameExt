@@ -931,7 +931,8 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
     dico_chosen_strats_k = compute_bg(
                             dico_chosen_strats_k=dico_chosen_strats_k, 
                             dico_tperiods_players=dico_tperiods_players, 
-                            t_period=t_period)
+                            t_period=t_period, 
+                            c0_M=c0_M)
     
     # compute utility fonction
     dico_chosen_strats_k, bool_is_One_Ui_None \
