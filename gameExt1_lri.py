@@ -743,7 +743,7 @@ def update_probabilities_pXs(dico_chosen_strats_k,
 #______________________________________________________________________________  
 def update_learning_variables(dico_chosen_strats_k, 
                               dico_tperiods_players, 
-                              t_period, is_repeated_kstep):
+                              t_period, k_step, is_repeated_kstep):
     """
     update learning variables ie add LEARNING_VARIABLES to dico_players_tperiods 
     
@@ -777,7 +777,6 @@ def update_learning_variables(dico_chosen_strats_k,
         state_i = dico_chosen_strats_k[player_i]["state_i"]
         Pi = dico_chosen_strats_k[player_i]["Pi"]
         S_t_plus_1_i = dico_chosen_strats_k[player_i]["S_t_plus_1_i"]
-        k_step = dico_chosen_strats_k[player_i]["k_step"]
         S_minus_i = dico_chosen_strats_k[player_i]["S_minus_i"]
         S_plus_i = dico_chosen_strats_k[player_i]["S_plus_i"]
         pp_t_i = dico_chosen_strats_k[player_i]["pp_t_i"]
@@ -958,6 +957,7 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
                 dico_chosen_strats_k=dico_chosen_strats_k, 
                 dico_tperiods_players=dico_tperiods_players, 
                 t_period=t_period, 
+                k_step=k_step,
                 is_repeated_kstep=is_repeated_kstep)
             
         k_step += 1
@@ -975,6 +975,7 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
                 dico_chosen_strats_k=dico_chosen_strats_k, 
                 dico_tperiods_players=dico_tperiods_players, 
                 t_period=t_period, 
+                k_step=k_step,
                 is_repeated_kstep=is_repeated_kstep)
         
         k_step = k_step
