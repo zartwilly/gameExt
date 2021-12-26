@@ -695,7 +695,7 @@ def update_probabilities_pXs(dico_chosen_strats_k,
         dico_chosen_strats_k[player_i][strategy_name_i] = p_X_new
         
         is_playing = True if p_X_new < csts.MAX_STRATEGY_PROBA else False
-        dico_chosen_strats_k[player_i][is_playing] = is_playing
+        dico_chosen_strats_k[player_i]["is_playing"] = is_playing
         
         # reduce remain strategies to  p_X_new
         # strats = {1,2,3,4,5,6}, X in starts
