@@ -1003,7 +1003,7 @@ def send_residual_stock_2_next_period(dico_tperiods_players, t_period, args):
     pass the remaining stock at t to the new stock at t+1 
     """
     t = int(t_period.split('_')[-1])
-    if t < args["t_periods"]:
+    if t < args["t_periods"]-1:
         next_period = csts.PERIOD_ROOT + str(t+1)
     else:
         next_period = t_period
@@ -1211,6 +1211,7 @@ def game_ext1(dico_tperiods_players, args):
     """
     dico_chosen_strats_t = dict(); liste_players = list()
     for t_period in dico_tperiods_players.keys():
+        print(f'**** period : {t_period} ****')
         
         k_step = 0; cpt_repeated_kstep = 0
         while k_step < args["k_steps"] \
