@@ -569,7 +569,7 @@ def compute_bg(dico_chosen_strats_k, dico_tperiods_players, t_period, c0_M):
         bg_min_i, bg_max_i = None, None
         bg_values = dico_tperiods_players[t_period][player_i]\
                                            .get(csts.BG_ALL_VALUES)
-        print(f"bg_values = {bg_values}")
+        print(f"{player_i} bg_values = {bg_values}")
         
         bg_min_i = min(bg_values) if len(bg_values) != 0 else None
         bg_max_i = max(bg_values) if len(bg_values) != 0 else None
@@ -794,7 +794,9 @@ def update_learning_variables(dico_chosen_strats_k,
         bg_max_i = dico_chosen_strats_k[player_i]["bg_max_i"]
         u_i = dico_chosen_strats_k[player_i]["u_i"]
         
-        is_playing = dico_chosen_strats_k[player_i]["is_playing"] 
+        is_playing = dico_chosen_strats_k[player_i]["is_playing"] \
+            if is_repeated_kstep == False \
+            else True
         
         c0 = dico_chosen_strats_k[player_i]["c0"]
         b0 = dico_chosen_strats_k[player_i]["b0"]
