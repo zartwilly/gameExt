@@ -560,20 +560,19 @@ def compute_bg(dico_chosen_strats_k, dico_tperiods_players, t_period, c0_M):
                     ['Pi']
         Ci = dico_tperiods_players[t_period][player_i]['Ci']
         
-        bg_i = dico_tperiods_players[t_period][player_i]['ben_i'] \
-                - dico_tperiods_players[t_period][player_i]['cst_i'] \
+        bg_i = dico_chosen_strats_k[player_i]['ben_i'] \
+                - dico_chosen_strats_k[player_i]['cst_i'] \
                 + c0_M * fct_aux.diff_positive(op1=Ci, op2=Pi)
                 
         dico_chosen_strats_k[player_i]["bg_i"] = bg_i
         
-        bg_min_i ,bg_max_i = None, None
+        bg_min_i, bg_max_i = None, None
+        bg_values = dico_tperiods_players[t_period][player_i]\
+                                           .get(csts.BG_ALL_VALUES)
+        print(f"bg_values = {bg_values}")
         
-        bg_min_i = min(dico_tperiods_players\
-                           [t_period][player_i]\
-                               .get(csts.BG_ALL_VALUES))
-        bg_max_i = max(dico_tperiods_players\
-                           [t_period][player_i]\
-                               .get(csts.BG_ALL_VALUES))
+        bg_min_i = min(bg_values) if len(bg_values) != 0 else None
+        bg_max_i = max(bg_values) if len(bg_values) != 0 else None
         
         if bg_min_i is None or bg_min_i > bg_i:
             bg_min_i = bg_i
