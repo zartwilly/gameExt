@@ -655,6 +655,7 @@ def compute_utility_fonction_ui(dico_chosen_strats_k,
 #          update p_Xs
 #           debut
 #______________________________________________________________________________
+
 def update_probabilities_pXs(dico_chosen_strats_k, 
                              dico_tperiods_players, 
                              t_period, 
@@ -696,6 +697,7 @@ def update_probabilities_pXs(dico_chosen_strats_k,
         p_X = dico_tperiods_players[t_period][player_i][strategy_name_i][-1]
         
         increasing_val = learning_rate * u_i * (1 - p_X)
+        # p_X_new = round(p_X + increasing_val, csts.ARRONDI)
         p_X_new = p_X + increasing_val
         dico_chosen_strats_k[player_i][strategy_name_i] = p_X_new
         
@@ -706,45 +708,61 @@ def update_probabilities_pXs(dico_chosen_strats_k,
         
         print(f"------> {player_i} strategy_name_i {strategy_name_i} = {p_X_new}")
         
-        # reduce remain strategies to  p_X_new
-        # strats = {1,2,3,4,5,6}, X in starts
-        # if X=1 and p_X = 0.2 and p_X_new = 0.3 then
-        #  increasing_val = 0.1
-        #  Y = strats - {X}
-        #  p_Y_new = p_Y -  increasing_val / len(Y)
         strategy_names \
                 = set(
                     filter(lambda x: x.startswith(csts.PROB_NAME), 
                            list(dico_tperiods_players[t_period][player_i].keys()) 
                           )
                     )
+                
         '''
-        Y = strategy_names - set({strategy_name_i})
-        for y in Y:
-            # y is the name of not choosen strategy
-            p_y = dico_players_tperiods[t_period][player_i][y][-1]
-            p_y_new = p_y - increasing_val / len(Y)
-            dico_players_tperiods\
-                [t_period]\
-                [player_i]\
-                [y].append(p_y_new)
+        count the negative probability
         '''
-           
-        Y = strategy_names - set({strategy_name_i})
+        dico_neg_Px_name = dict()
         no_choose_strategy_names = strategy_names - set({strategy_name_i})
+        for no_choose_strategy_name in no_choose_strategy_names:
+            p_X = dico_tperiods_players[t_period][player_i][no_choose_strategy_name][-1]
+            if p_X - increasing_val < 0:
+                dico_neg_Px_name[no_choose_strategy_name] = p_X
+        
+        '''
+        update probas for no_choose_strategy_names
+        '''
+        Y_prob_sup_increaseVal = strategy_names \
+                                    - {strategy_name_i} \
+                                    - set(dico_neg_Px_name.keys())
         for no_choose_strategy_name_i in no_choose_strategy_names:
-            p_y = dico_tperiods_players\
-                    [t_period][player_i]\
-                    [no_choose_strategy_name_i][-1]
-            p_y_new = p_y - increasing_val / len(Y)
-            """
-            faire une repartition des probas selon leur poids
-            """
-            p_y_new = p_y_new if p_y_new >= 0 else 0
+            p_y_new = None
+            if no_choose_strategy_name_i in dico_neg_Px_name.keys():
+                p_y_new = 0
+            else:
+                p_y = dico_tperiods_players[t_period][player_i]\
+                                            [no_choose_strategy_name_i][-1]
+                # p_y_new = round(p_y \
+                #                 - increasing_val/len(Y_prob_sup_increaseVal) \
+                #                 + sum(dico_neg_Px_name.values()) / \
+                #                     len(Y_prob_sup_increaseVal), csts.ARRONDI)
+                p_y_new = p_y \
+                            - increasing_val/len(Y_prob_sup_increaseVal) \
+                            + sum(dico_neg_Px_name.values()) / \
+                                len(Y_prob_sup_increaseVal)
+                pass
+            
             dico_chosen_strats_k[player_i][no_choose_strategy_name_i] = p_y_new
             
-            print(f"---> {no_choose_strategy_name_i} = {p_y_new}")
-                
+        '''
+        print proba by pX_name
+        '''
+        sum_probas = 0
+        for strategy_name in strategy_names:
+            prob_pX_name = dico_chosen_strats_k[player_i][strategy_name]
+            print(f"{strategy_name}: {prob_pX_name}") \
+                if strategy_name != strategy_name_i \
+                else print(f"{strategy_name}: {prob_pX_name} <----")
+            sum_probas += prob_pX_name
+            
+        print(f"sum_probas = {sum_probas}")
+        
             
     is_all_strategy_probas_sup_SEUIL = True \
         if cpt_all_strategy_probas >= len(dico_chosen_strats_k.keys()) \
