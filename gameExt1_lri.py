@@ -1121,13 +1121,20 @@ def compute_IB_IC_Perft(dico_tperiods_players, dico_chosen_strats_t,
      
      IB = sum_{t=1}^{T} b0_t*prod_i^t, IC = sum_{t=1}^{T} c0_t*cons_i^t
     """
-    dico_IB_IC = dict()
-    for player_i in liste_players:
-        dico_IB_IC[player_i] = {"IB_i_t":[], "IC_i_t":[], 
-                                "CONS_i_t":[], "PROD_i_t":[]}
-        
+    
+    # for player_i in liste_players:
+    #     dico_IB_IC[player_i] = {"IB_i_t":[], "IC_i_t": [], 
+    #                             "CONS_i_t":[], "PROD_i_t": [], 
+    #                             "beta_sg_t_minus": None, "beta_sg_t_plus": None}
+    
+    dico_IB_IC = dict()    
     dico_Perft = dict()
     for t_period in dico_chosen_strats_t.keys():
+        for player_i in dico_chosen_strats_t[t_period].keys():
+            dico_IB_IC[player_i] = {"IB_i_t": [], "IC_i_t": [], 
+                                    "CONS_i_t": [], "PROD_i_t": [], 
+                                    "beta_sg_t_minus": None, 
+                                    "beta_sg_t_plus": None}
         Perf_t = 0
         for player_i in dico_chosen_strats_t[t_period].keys():
             c0_t = dico_chosen_strats_t[t_period][player_i]["c0"]
@@ -1173,6 +1180,7 @@ def compute_IB_IC_Perft(dico_tperiods_players, dico_chosen_strats_t,
             = sum(dico_IB_IC[player_i]["CONS_i_t"])
         dico_IB_IC[player_i]["PROD_i"] \
             = sum(dico_IB_IC[player_i]["PROD_i_t"])
+    
         dico_IB_IC[player_i]["BB_i"] \
             = dico_IB_IC[player_i]["beta_sg_t_plus"] \
                 * sum(dico_IB_IC[player_i]["PROD_i_t"])
@@ -1183,7 +1191,6 @@ def compute_IB_IC_Perft(dico_tperiods_players, dico_chosen_strats_t,
     dico_VR_APerf = {"VR":VR, "APerf":APerf}
     
     return dico_IB_IC, dico_Perft, dico_VR_APerf
-
 #______________________________________________________________________________
 #                   compute IB, IC and Perft
 #                           fin
