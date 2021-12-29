@@ -48,7 +48,9 @@ def compute_ProdConsRiSi(dico_tperiods_players, dico_PiStateiModei,
     elif state_i == csts.STATES[1]:
         prod_i = 0
         cons_i = 0 if mode_i == csts.STATE2_STRATS[0] else Ci - Pi
-        S_t_plus_1_i = Si - (Ci - Pi) if mode_i == csts.STATE2_STRATS[0] else Si
+        #S_t_plus_1_i = Si - (Ci - Pi) if mode_i == csts.STATE2_STRATS[0] else Si
+        S_t_plus_1_i = fct_aux.diff_positive(op1=Si, op2=Ci-Pi) \
+            if mode_i == csts.STATE2_STRATS[0] else Si
     elif state_i == csts.STATES[2]:
         cons_i = 0
         prod_i = fct_aux.diff_positive(Pi-Ci, Si_max-Si) \
@@ -470,6 +472,7 @@ def compute_gamma_Siplusminus_ImM_OmM_bencstis(dico_chosen_strats_k,
         I_M = I_M if Ii_M is None else I_M + Ii_M
         O_m = O_m if Oi_m is None else O_m + Oi_m
         O_M = O_M if Oi_M is None else O_M + Oi_M
+        print(f"{player_i}: O_m={O_m}, O_M={O_M}, Pi={Pi}, Ci={Ci}, Si={Si}, {state_i}")
         
         # verification condition 
         assert S_minus_i <= S_minus_i
@@ -972,6 +975,7 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
             )
     
     assert In_sg_k >= I_m and In_sg_k <= I_M
+    print(f"Out_sg_k={Out_sg_k}, O_m={O_m}, O_M={O_M}")
     assert Out_sg_k >= O_m and Out_sg_k <= O_M
 
     # compute c0_M
