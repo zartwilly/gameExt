@@ -1367,8 +1367,9 @@ def test_gameExt1(args):
 
 
 if __name__ == "__main__":
+    ti = time.time()
     t_periods = 5
-    k_steps = 1000
+    k_steps = 5000 #1000
     n_instances = 10
     n_instance = np.random.choice(range(10))
     
@@ -1393,6 +1394,8 @@ if __name__ == "__main__":
             }
     
     test_gameExt1(args)
+    
+    print(f"runtime = {time.time() - ti}")
     
     
     
