@@ -983,6 +983,7 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
                       csts.ARRONDI)
     # TODO ----> IMPORTANT a voir avec Dominique c0_M = MIN(frac_cOM, pi_0_minus)
     c0_M = max(frac_cOM, pi_0_minus)
+    c0_M = round(c0_M)
     print(f'c0={c0}, c0_M={c0_M}, frac_cOM={frac_cOM}')
     assert c0 <= c0_M
     
@@ -1245,21 +1246,22 @@ def save_learning_variables(dico_tperiods_players, dico_chosen_strats_t,
         
     
     # save all dicos to hdf5
-    liste_tup_jsonDico \
-        = [("data_tperiods_players", 
-            json.dumps(dico_tperiods_players, indent=4, cls=SetEncoder)), 
-           ("data_chosen_strategy_4_players", 
-            json.dumps(dico_chosen_strats_t, indent=4, cls=SetEncoder)), 
-           ("data_players_IB_IC_Perft",
-            json.dumps(dico_IB_IC_Perft, indent=4, cls=SetEncoder)),
-           ("data_tperiods_Perft", json.dumps(dico_Perft, indent=4, cls=SetEncoder)), 
-           ("data_VR_Perft", json.dumps(dico_VR_APerf, indent=4, cls=SetEncoder))
-          ]
-    with h5py.File(
-            os.path.join( path_2_save,
-                         f'data_{n_instances}_instances.hdf5'), 'w') as f:
-        for (id_json, json_data) in liste_tup_jsonDico:
-            f.create_dataset(id_json, data=json_data)
+    # TODO uncomment when error is fixed
+    # liste_tup_jsonDico \
+    #     = [("data_tperiods_players", 
+    #         json.dumps(dico_tperiods_players, indent=4, cls=SetEncoder)), 
+    #        ("data_chosen_strategy_4_players", 
+    #         json.dumps(dico_chosen_strats_t, indent=4, cls=SetEncoder)), 
+    #        ("data_players_IB_IC_Perft",
+    #         json.dumps(dico_IB_IC_Perft, indent=4, cls=SetEncoder)),
+    #        ("data_tperiods_Perft", json.dumps(dico_Perft, indent=4, cls=SetEncoder)), 
+    #        ("data_VR_Perft", json.dumps(dico_VR_APerf, indent=4, cls=SetEncoder))
+    #       ]
+    # with h5py.File(
+    #         os.path.join( path_2_save,
+    #                      f'data_{n_instances}_instances.hdf5'), 'w') as f:
+    #     for (id_json, json_data) in liste_tup_jsonDico:
+    #         f.create_dataset(id_json, data=json_data)
             
     print("----> Saving all dicos with SUCCES......")
     
@@ -1368,8 +1370,8 @@ def test_gameExt1(args):
 
 if __name__ == "__main__":
     ti = time.time()
-    t_periods = 5
-    k_steps = 5000 #1000
+    t_periods = 50 #15
+    k_steps = 50000 #5000 #1000
     n_instances = 10
     n_instance = np.random.choice(range(10))
     
