@@ -391,31 +391,31 @@ def choose_strategy_4_all_players(dico_tperiods_players, t_period):
 #           debut
 #______________________________________________________________________________
 
-def compute_Si_plusminus_ImM_OmM(state_i, Si_max, Si, Ci, Pi):
-    """
-    compute S_plus_i, S_minus_i and also Ii_m, Ii_M, Oi_m, Oi_M 
+# def compute_Si_plusminus_ImM_OmM(state_i, Si_max, Si, Ci, Pi):
+#     """
+#     compute S_plus_i, S_minus_i and also Ii_m, Ii_M, Oi_m, Oi_M 
     
-    """
-    S_plus_i, S_minus_i = None, None
-    Ii_m, Ii_M, Oi_m, Oi_M = None, None, None, None
-    if state_i == csts.STATES[0]:
-        # Deficit
-        S_plus_i = Si; S_minus_i = 0
-        Oi_m = Ci - (Pi + Si)
-        Oi_M = Ci - Pi if Oi_M is None else Oi_M + (Ci - Pi)
-    elif state_i == csts.STATES[1]:
-        # Self
-        S_plus_i = Si; S_minus_i = Si - (Ci - Pi);
-        Oi_M = Ci - Pi if Oi_M is None else Oi_M + (Ci - Pi)
-    elif state_i == csts.STATES[2]:
-        # Surplus
-        S_minus_i = Si; S_plus_i = max(Si_max, Si + (Ci - Pi));
-        Ii_m = fct_aux.diff_positive(op1=Pi, op2=Ci+(Si_max-Si))
-        Ii_M = Pi - Ci
-    else:
-        print(f" ---> state={state_i} DON'T EXIST <---")
+#     """
+#     S_plus_i, S_minus_i = None, None
+#     Ii_m, Ii_M, Oi_m, Oi_M = None, None, None, None
+#     if state_i == csts.STATES[0]:
+#         # Deficit
+#         S_plus_i = Si; S_minus_i = 0
+#         Oi_m = Ci - (Pi + Si)
+#         Oi_M = Ci - Pi if Oi_M is None else Oi_M + (Ci - Pi)
+#     elif state_i == csts.STATES[1]:
+#         # Self
+#         S_plus_i = Si; S_minus_i = Si - (Ci - Pi);
+#         Oi_M = Ci - Pi if Oi_M is None else Oi_M + (Ci - Pi)
+#     elif state_i == csts.STATES[2]:
+#         # Surplus
+#         S_minus_i = Si; S_plus_i = max(Si_max, Si + (Ci - Pi));
+#         Ii_m = fct_aux.diff_positive(op1=Pi, op2=Ci+(Si_max-Si))
+#         Ii_M = Pi - Ci
+#     else:
+#         print(f" ---> state={state_i} DON'T EXIST <---")
         
-    return S_plus_i, S_minus_i, Ii_m, Ii_M, Oi_m, Oi_M
+#     return S_plus_i, S_minus_i, Ii_m, Ii_M, Oi_m, Oi_M
 
 def compute_gamma_Siplusminus_ImM_OmM_bencstis(dico_chosen_strats_k, 
                                                dico_tperiods_players, 
@@ -464,7 +464,7 @@ def compute_gamma_Siplusminus_ImM_OmM_bencstis(dico_chosen_strats_k,
         Si_max = dico_tperiods_players[t_period][player_i]['Si_max']
         
         S_plus_i, S_minus_i, Ii_m, Ii_M, Oi_m, Oi_M \
-            = compute_Si_plusminus_ImM_OmM(state_i=state_i, 
+            = fct_aux.compute_Si_plusminus_ImM_OmM(state_i=state_i, 
                                             Si_max=Si_max, 
                                             Si=Si, Ci=Ci, Pi=Pi)
         # compute I_m, I_M, O_m, O_M
