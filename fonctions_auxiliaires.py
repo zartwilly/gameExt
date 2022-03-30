@@ -180,3 +180,50 @@ def compute_Si_plusminus_ImM_OmM(state_i, Si_max, Si, Ci, Pi):
 #           ben_i, cst_i 
 #           fin
 #______________________________________________________________________________
+
+
+#______________________________________________________________________________
+#          compute u_i
+#           debut
+#______________________________________________________________________________  
+def compute_utility_fonction_ui(dico_chosen_strats_k, 
+                                t_period):
+    """
+    compute utility fonction u_i
+    dico_chosen_strats_k[player_i] = {"strategy_name_i":, 
+                                      "q_plus_k_i":, "q_minus_k_i":,
+                                      "P_t_plus_1_i":, "C_t_plus_1_i": ,
+                                      "prod_i":, "cons_i":, "r_i":, 
+                                      "S_t_plus_1_i": , 
+                                      "Pi": , 
+                                      "pp_t_i": , 
+                                      "ben_i": , "cst_i":,
+                                      "c0": , "b0":, 
+                                      "pi_0_plus": , "pi_0_minus": , 
+                                      "beta_sg_t_minus_1_minus":,
+                                      "beta_sg_t_minus_1_plus":,
+                                      "bg_i":, 'bg_min_i':, 'bg_max_i':, 
+                                    }
+    """
+    bool_is_One_Ui_None = False 
+    for player_i in dico_chosen_strats_k.keys():
+        bg_min_i = dico_chosen_strats_k[player_i]["bg_min_i"]
+        bg_max_i = dico_chosen_strats_k[player_i]["bg_max_i"]
+        bg_i = dico_chosen_strats_k[player_i]["bg_i"]
+        
+        u_i = 1 - (bg_max_i - bg_i)/ (bg_max_i - bg_min_i) \
+            if bg_max_i != bg_min_i \
+            else None
+            
+        bool_is_One_Ui_None = False \
+            if bg_max_i != bg_min_i and bool_is_One_Ui_None == False \
+            else True
+            
+        dico_chosen_strats_k[player_i]["u_i"] = u_i
+        
+    return dico_chosen_strats_k, bool_is_One_Ui_None
+
+#______________________________________________________________________________
+#          compute u_i
+#           fin
+#______________________________________________________________________________ 
