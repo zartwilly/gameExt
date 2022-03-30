@@ -597,62 +597,51 @@ def compute_bg(dico_chosen_strats_k, dico_tperiods_players, t_period, c0_M):
 #           fin
 #______________________________________________________________________________  
 
-#______________________________________________________________________________
-#          compute u_i
-#           debut
-#______________________________________________________________________________  
-def compute_utility_fonction_ui(dico_chosen_strats_k, 
-                                dico_tperiods_players, 
-                                t_period):
-    """
-    compute utility fonction u_i
-    dico_chosen_strats_k[player_i] = {"strategy_name_i":, 
-                                      "q_plus_k_i":, "q_minus_k_i":,
-                                      "P_t_plus_1_i":, "C_t_plus_1_i": ,
-                                      "prod_i":, "cons_i":, "r_i":, 
-                                      "S_t_plus_1_i": , 
-                                      "Pi": , 
-                                      "pp_t_i": , 
-                                      "ben_i": , "cst_i":,
-                                      "c0": , "b0":, 
-                                      "pi_0_plus": , "pi_0_minus": , 
-                                      "beta_sg_t_minus_1_minus":,
-                                      "beta_sg_t_minus_1_plus":,
-                                      "bg_i":, 'bg_min_i':, 'bg_max_i':, 
-                                    }
-    dico_tperiods_players = {"t_j":{'player_i':dico_t_player_i, 
-                                        'player_i+1':dico_t_player_i+1,
-                                        ...,}, 
-                             ...
-                             }
-        avec 
-        t_period = 't_j' with j = {0,1,..., N}
-        player_ = 'player_i' with i = {0,1,..., M} and 
-        dico_t_player_i = {keys=csts.LEARNING_PROPERTIES, 
-                           values=[values' list of LEARNING_PROPERTIES]}
-    """
-    bool_is_One_Ui_None = False 
-    for player_i in dico_chosen_strats_k.keys():
-        bg_min_i = dico_chosen_strats_k[player_i]["bg_min_i"]
-        bg_max_i = dico_chosen_strats_k[player_i]["bg_max_i"]
-        bg_i = dico_chosen_strats_k[player_i]["bg_i"]
+# #______________________________________________________________________________
+# #          compute u_i
+# #           debut
+# #______________________________________________________________________________  
+# def compute_utility_fonction_ui(dico_chosen_strats_k, 
+#                                 t_period):
+#     """
+#     compute utility fonction u_i
+#     dico_chosen_strats_k[player_i] = {"strategy_name_i":, 
+#                                       "q_plus_k_i":, "q_minus_k_i":,
+#                                       "P_t_plus_1_i":, "C_t_plus_1_i": ,
+#                                       "prod_i":, "cons_i":, "r_i":, 
+#                                       "S_t_plus_1_i": , 
+#                                       "Pi": , 
+#                                       "pp_t_i": , 
+#                                       "ben_i": , "cst_i":,
+#                                       "c0": , "b0":, 
+#                                       "pi_0_plus": , "pi_0_minus": , 
+#                                       "beta_sg_t_minus_1_minus":,
+#                                       "beta_sg_t_minus_1_plus":,
+#                                       "bg_i":, 'bg_min_i':, 'bg_max_i':, 
+#                                     }
+#     """
+#     bool_is_One_Ui_None = False 
+#     for player_i in dico_chosen_strats_k.keys():
+#         bg_min_i = dico_chosen_strats_k[player_i]["bg_min_i"]
+#         bg_max_i = dico_chosen_strats_k[player_i]["bg_max_i"]
+#         bg_i = dico_chosen_strats_k[player_i]["bg_i"]
         
-        u_i = 1 - (bg_max_i - bg_i)/ (bg_max_i - bg_min_i) \
-            if bg_max_i != bg_min_i \
-            else None
+#         u_i = 1 - (bg_max_i - bg_i)/ (bg_max_i - bg_min_i) \
+#             if bg_max_i != bg_min_i \
+#             else None
             
-        bool_is_One_Ui_None = False \
-            if bg_max_i != bg_min_i and bool_is_One_Ui_None == False \
-            else True
+#         bool_is_One_Ui_None = False \
+#             if bg_max_i != bg_min_i and bool_is_One_Ui_None == False \
+#             else True
             
-        dico_chosen_strats_k[player_i]["u_i"] = u_i
+#         dico_chosen_strats_k[player_i]["u_i"] = u_i
         
-    return dico_chosen_strats_k, bool_is_One_Ui_None
+#     return dico_chosen_strats_k, bool_is_One_Ui_None
 
-#______________________________________________________________________________
-#          compute u_i
-#           fin
-#______________________________________________________________________________ 
+# #______________________________________________________________________________
+# #          compute u_i
+# #           fin
+# #______________________________________________________________________________ 
 
 #______________________________________________________________________________
 #          update p_Xs
@@ -997,9 +986,8 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
     
     # compute utility fonction
     dico_chosen_strats_k, bool_is_One_Ui_None \
-        = compute_utility_fonction_ui(
+        = fct_aux.compute_utility_fonction_ui(
             dico_chosen_strats_k=dico_chosen_strats_k, 
-            dico_tperiods_players=dico_tperiods_players, 
             t_period=t_period
             )
 
