@@ -201,8 +201,8 @@ def generate_strategies_f21_f22_players(dico_insti_tperiods_players, r_steps):
     r_0_s = [r_0_1, r_0_2, ..., r_0_100]
     r_1_s = [r_1_1, r_1_2, ..., r_1_100]
     r_2_s = [r_2_1, r_2_2, ..., r_2_100]
-    strategies_f22_names = ["r_0_s", "r_1_s", "r_2_s"]
-    strategies_f22_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]
+    f21_strategies_names = ["r_0_s", "r_1_s", "r_2_s"]
+    f21_strategies_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]
 
     Parameters
     ----------
@@ -224,8 +224,8 @@ def generate_strategies_f21_f22_players(dico_insti_tperiods_players, r_steps):
                          r_0_s = [r_0_1, r_0_2, ..., r_0_100]
                          r_1_s = [r_1_1, r_1_2, ..., r_1_100]
                          r_2_s = [r_2_1, r_2_2, ..., r_2_100]
-                         strategies_f22_names = ["r_0_s", "r_1_s", "r_2_s"]
-                         strategies_f22_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]},
+                         f21_strategies_names = ["r_0_s", "r_1_s", "r_2_s"]
+                         f21_strategies_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]},
                                    
         
     """
