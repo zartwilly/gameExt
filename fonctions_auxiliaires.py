@@ -142,4 +142,41 @@ def compute_b0_c0(pi_0_plus, pi_0_minus, Out_sg_k, In_sg_k,
 #           fin
 #______________________________________________________________________________
 
+#______________________________________________________________________________
+#          compute 
+#           S_minus_i, S_plus_i, I_m, I_M, O_m, O_M 
+#           ben_i, cst_i 
+#           debut
+#______________________________________________________________________________
+def compute_Si_plusminus_ImM_OmM(state_i, Si_max, Si, Ci, Pi):
+    """
+    compute S_plus_i, S_minus_i and also Ii_m, Ii_M, Oi_m, Oi_M 
+    
+    """
+    S_plus_i, S_minus_i = None, None
+    Ii_m, Ii_M, Oi_m, Oi_M = None, None, None, None
+    if state_i == csts.STATES[0]:
+        # Deficit
+        S_plus_i = Si; S_minus_i = 0
+        Oi_m = Ci - (Pi + Si)
+        Oi_M = Ci - Pi if Oi_M is None else Oi_M + (Ci - Pi)
+    elif state_i == csts.STATES[1]:
+        # Self
+        S_plus_i = Si; S_minus_i = Si - (Ci - Pi);
+        Oi_M = Ci - Pi if Oi_M is None else Oi_M + (Ci - Pi)
+    elif state_i == csts.STATES[2]:
+        # Surplus
+        S_minus_i = Si; S_plus_i = max(Si_max, Si + (Ci - Pi));
+        Ii_m = diff_positive(op1=Pi, op2=Ci+(Si_max-Si))
+        Ii_M = Pi - Ci
+    else:
+        print(f" ---> state={state_i} DON'T EXIST <---")
+        
+    return S_plus_i, S_minus_i, Ii_m, Ii_M, Oi_m, Oi_M
 
+#______________________________________________________________________________
+#          compute 
+#           S_minus_i, S_plus_i, I_m, I_M, O_m, O_M 
+#           ben_i, cst_i 
+#           fin
+#______________________________________________________________________________
