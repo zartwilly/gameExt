@@ -154,8 +154,8 @@ def add_f22_strategies(dico_t_player_i, r_steps):
                          r_0_s = [r_0_1, r_0_2, ..., r_0_100]
                          r_1_s = [r_1_1, r_1_2, ..., r_1_100]
                          r_2_s = [r_2_1, r_2_2, ..., r_2_100]
-                         strategies_f22_names = ["r_0_s", "r_1_s", "r_2_s"]
-                         strategies_f22_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]},
+                         f12_strategies_names = ["r_0_s", "r_1_s", "r_2_s"]
+                         f12_strategies_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]},
 
     """
     probs = [1/len(dico_t_player_i["di"]) for i in dico_t_player_i["di"]]
@@ -168,7 +168,7 @@ def add_f22_strategies(dico_t_player_i, r_steps):
         prob = probs[u]
         for r_step in range(r_steps):
             r_u_rstep_s = {"prob":prob, "di": di, 
-                           "strategies_f22_names":[csts.PROB_NAME+"0s", 
+                           "f22_strategies_names":[csts.PROB_NAME+"0s", 
                                                    csts.PROB_NAME+"1s"],
                            csts.PROB_NAME+"0s": [0.5],
                            csts.PROB_NAME+"1s": [0.5]
@@ -176,8 +176,8 @@ def add_f22_strategies(dico_t_player_i, r_steps):
             dico_t_player_i[csts.F21_NAME+str(u)+"_s"] = r_u_rstep_s
         f12_strategies.add(csts.F21_NAME+str(u)+"_s")
       
-    dico_t_player_i["strategies_f12_names"] = list(f12_strategies)
-    dico_t_player_i["strategies_f12_names_is"] = []
+    dico_t_player_i["f12_strategies_names"] = list(f12_strategies)
+    dico_t_player_i["f12_strategies_names_is"] = []
     
     return dico_t_player_i
     
@@ -201,8 +201,8 @@ def generate_strategies_f21_f22_players(dico_insti_tperiods_players, r_steps):
     r_0_s = [r_0_1, r_0_2, ..., r_0_100]
     r_1_s = [r_1_1, r_1_2, ..., r_1_100]
     r_2_s = [r_2_1, r_2_2, ..., r_2_100]
-    f21_strategies_names = ["r_0_s", "r_1_s", "r_2_s"]
-    f21_strategies_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]
+    f12_strategies_names = ["r_0_s", "r_1_s", "r_2_s"]
+    f12_strategies_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]
 
     Parameters
     ----------
@@ -224,8 +224,8 @@ def generate_strategies_f21_f22_players(dico_insti_tperiods_players, r_steps):
                          r_0_s = [r_0_1, r_0_2, ..., r_0_100]
                          r_1_s = [r_1_1, r_1_2, ..., r_1_100]
                          r_2_s = [r_2_1, r_2_2, ..., r_2_100]
-                         f21_strategies_names = ["r_0_s", "r_1_s", "r_2_s"]
-                         f21_strategies_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]},
+                         f12_strategies_names = ["r_0_s", "r_1_s", "r_2_s"]
+                         f12_strategies_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]},
                                    
         
     """
