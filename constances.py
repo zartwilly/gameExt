@@ -18,6 +18,7 @@ PLAYER_ROOT = "player_"
 
 PERIOD_ROOT = "t_"
 PROB_NAME = "p_"
+F21_NAME = "r_"
 # save all values of bg for k_step <-0 to n even if k_step is repeated N times (N<10)
 BG_ALL_VALUES = "bg_all_is"
 
