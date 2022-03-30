@@ -131,8 +131,121 @@ def generation_strategies_tperiods(dico_data, t_periods):
 #______________________________________________________________________________
 
 
+#______________________________________________________________________________
+#                       generate strategies f12 & f22 : debut
+#______________________________________________________________________________
+def add_f22_strategies(dico_t_player_i, r_steps):
+    """
+    add f22 strategy for one player
+
+    Parameters
+    ----------
+    dico_player_i : TYPE
+        DESCRIPTION.
+    r_step : integer
+        learning step number for production_game2
+
+    csts.F21_NAME = 'r_' 
+
+    Returns
+    -------
+    dico_t_player_i = {keys=csts.LEARNING_PROPERTIES, 
+                        values=[values' list of LEARNING_PROPERTIES],
+                         r_0_s = [r_0_1, r_0_2, ..., r_0_100]
+                         r_1_s = [r_1_1, r_1_2, ..., r_1_100]
+                         r_2_s = [r_2_1, r_2_2, ..., r_2_100]
+                         strategies_f22_names = ["r_0_s", "r_1_s", "r_2_s"]
+                         strategies_f22_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]},
+
+    """
+    probs = [1/len(dico_t_player_i["di"]) for i in dico_t_player_i["di"]]
+    probs = np.array(probs)
+    probs /= probs.sum()
+    probs = list(probs)
+    
+    f12_strategies = set()
+    for u, di in enumerate(dico_t_player_i["di"]):
+        prob = probs[u]
+        for r_step in range(r_steps):
+            r_u_rstep_s = {"prob":prob, "di": di, 
+                           "strategies_f22_names":[csts.PROB_NAME+"0s", 
+                                                   csts.PROB_NAME+"1s"],
+                           csts.PROB_NAME+"0s": [0.5],
+                           csts.PROB_NAME+"1s": [0.5]
+                           } 
+            dico_t_player_i[csts.F21_NAME+str(u)+"_s"] = r_u_rstep_s
+        f12_strategies.add(csts.F21_NAME+str(u)+"_s")
+      
+    dico_t_player_i["strategies_f12_names"] = list(f12_strategies)
+    dico_t_player_i["strategies_f12_names_is"] = []
+    
+    return dico_t_player_i
+    
+    
+def generate_strategies_f21_f22_players(dico_insti_tperiods_players, r_steps):
+    """
+    generate strategies for production_game2 (f12) and initial_game2 (f22).
+    f12 runs during r steps
+    f22 runs during k steps
+    
+    * f12 strategy
+    there are 3 strategies r_u_s = [r_u_1, ..., r_u_100] 
+    with $u \in {0,1,2}$ and 
+    $r_u_1 = {"prob":val1, "di":val2, "strategies_f22_names":["p_0s","p_1s"], 
+              "strategies_f22_names_is": ["p_0s"^1, ..., "p_1s"^1000],
+               "p_0s": [prob_1, ..., prob_1000], 
+               "p_1s": [1-prob_1, ..., 1-prob_1000], 
+              }
+    $
+    * f22 strategy
+    r_0_s = [r_0_1, r_0_2, ..., r_0_100]
+    r_1_s = [r_1_1, r_1_2, ..., r_1_100]
+    r_2_s = [r_2_1, r_2_2, ..., r_2_100]
+    strategies_f22_names = ["r_0_s", "r_1_s", "r_2_s"]
+    strategies_f22_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]
+
+    Parameters
+    ----------
+    dico_insti_tperiods_players : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    dico_insti_tperiods_players = {
+        "t_j":{'player_i':dico_t_player_i, 
+               'player_i+1':dico_t_player_i+1,
+        }
+    
+    with 
+    t_period = 't_j' with j = {0,1,..., N}
+    player_ = 'player_i' with i = {0,1,..., M} and 
+    dico_t_player_i = {keys=csts.LEARNING_PROPERTIES, 
+                        values=[values' list of LEARNING_PROPERTIES],
+                         r_0_s = [r_0_1, r_0_2, ..., r_0_100]
+                         r_1_s = [r_1_1, r_1_2, ..., r_1_100]
+                         r_2_s = [r_2_1, r_2_2, ..., r_2_100]
+                         strategies_f22_names = ["r_0_s", "r_1_s", "r_2_s"]
+                         strategies_f22_names_is = ["r_0_s"^1, "r_0_s"^2, ...,"r_2_s"^100]},
+                                   
+        
+    """
+    
+    for t_period in dico_insti_tperiods_players.keys():
+        dico_t_players = dico_insti_tperiods_players[t_period]
+        for player_i in dico_t_players.keys():
+            dico_t_players[player_i] \
+                = add_f22_strategies(dico_t_player_i=dico_t_players[player_i], 
+                                     r_steps=r_steps)
+        
+    return dico_insti_tperiods_players
+#______________________________________________________________________________
+#                       generate strategies f12 & f22 : fin
+#______________________________________________________________________________
+
 if __name__ == "__main__":
     t_periods = 5
+    r_steps = 10
+    k_steps = 100
     n_instances = 10
     n_instance = np.random.choice(range(10))
     
@@ -148,6 +261,11 @@ if __name__ == "__main__":
         = generation_strategies_tperiods(
             dico_data=dico_insti_tperiods_players, 
             t_periods=t_periods)
+        
+    # test generation f12 and f22 strategies
+    dico_insti_tperiods_players_f12_22 \
+        = generate_strategies_f21_f22_players(dico_insti_tperiods_players, 
+                                              r_steps)
     
     
     
