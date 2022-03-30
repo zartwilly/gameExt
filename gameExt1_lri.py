@@ -78,36 +78,36 @@ def compute_ProdConsRiSi(dico_tperiods_players, dico_PiStateiModei,
 #              compute prod, cons, r_i, remain_Si or Si_t_plus_1: fin
 #______________________________________________________________________________
 
-#______________________________________________________________________________
-#       compute q_plus_i, q_minus_i, phi_EPO_plus, phi_EPO_minus : debut
-#______________________________________________________________________________
-def compute_qi_plus_minus(Pi, Ci, Si, Si_max):
-    """
-    compute q_plus et q_minus for player_i
+# #______________________________________________________________________________
+# #       compute q_plus_i, q_minus_i, phi_EPO_plus, phi_EPO_minus : debut
+# #______________________________________________________________________________
+# def compute_qi_plus_minus(Pi, Ci, Si, Si_max):
+#     """
+#     compute q_plus et q_minus for player_i
 
-    """
-    q_minus_k_i = fct_aux.diff_positive(Ci, Pi) \
-                    - fct_aux.diff_positive(Pi, Ci+Si_max-Si)
-    q_plus_k_i = fct_aux.diff_positive(Pi, Ci) \
-                    - fct_aux.diff_positive(Ci, Pi+Si)
+#     """
+#     q_minus_k_i = fct_aux.diff_positive(Ci, Pi) \
+#                     - fct_aux.diff_positive(Pi, Ci+Si_max-Si)
+#     q_plus_k_i = fct_aux.diff_positive(Pi, Ci) \
+#                     - fct_aux.diff_positive(Ci, Pi+Si)
                     
-    return q_plus_k_i, q_minus_k_i
+#     return q_plus_k_i, q_minus_k_i
         
-def compute_phi_EPO_plus(q_plus_k, quantity, a):
-    """
-    compute the benefit of energy sold by SG to EPO
-    """
-    return quantity * pow(q_plus_k, a)
+# def compute_phi_EPO_plus(q_plus_k, quantity, a):
+#     """
+#     compute the benefit of energy sold by SG to EPO
+#     """
+#     return quantity * pow(q_plus_k, a)
         
-def compute_phi_EPO_minus(q_minus_k, quantity, b):
-    """
-    compute the cost of energy bought by SG to EPO
-    """
-    return quantity * pow(q_minus_k, b)
+# def compute_phi_EPO_minus(q_minus_k, quantity, b):
+#     """
+#     compute the cost of energy bought by SG to EPO
+#     """
+#     return quantity * pow(q_minus_k, b)
     
-#______________________________________________________________________________
-#       compute q_plus_i, q_minus_i, phi_EPO_plus, phi_EPO_minus : fin
-#______________________________________________________________________________
+# #______________________________________________________________________________
+# #       compute q_plus_i, q_minus_i, phi_EPO_plus, phi_EPO_minus : fin
+# #______________________________________________________________________________
 
 #______________________________________________________________________________
 #                  compute gamma_i, Si_plus, minus: debut
@@ -261,7 +261,7 @@ def choose_strategy_4_all_players(dico_tperiods_players, t_period):
             In_sg_k += prod_i
             
             q_plus_k_i, q_minus_k_i \
-                = compute_qi_plus_minus(
+                = fct_aux.compute_qi_plus_minus(
                     Pi=dico_tperiods_players[t_period][player_i]\
                                             ["strategies"][strategy_name_i]["Pi"],
                     Ci=dico_tperiods_players[t_period][player_i]["Ci"], 
@@ -338,10 +338,10 @@ def compute_beta_sg(t_period, dico_chosen_strats_t,
             sum_T_prod += sum_N_prod_i;  sum_T_cons += sum_N_cons_i
            
         
-        beta_sg_t_minus_1_plus =  compute_phi_EPO_plus(
+        beta_sg_t_minus_1_plus =  fct_aux.compute_phi_EPO_plus(
                                     q_plus_k=sum_T_diff_plus, 
                                     quantity=quantity_a, a=a)
-        beta_sg_t_minus_1_minus = compute_phi_EPO_minus(
+        beta_sg_t_minus_1_minus = fct_aux.compute_phi_EPO_minus(
                                     q_minus_k=sum_T_diff_minus, 
                                     quantity=quantity_b, b=b)
         
@@ -363,12 +363,12 @@ def compute_b0_c0(pi_0_plus, pi_0_minus, Out_sg_k, In_sg_k,
     b0, c0 = None, None
     if In_sg_k >= Out_sg_k:
         c0 = pi_0_minus
-        phi_EPO_plus = compute_phi_EPO_plus(q_plus_k= In_sg_k-Out_sg_k, 
+        phi_EPO_plus = fct_aux.compute_phi_EPO_plus(q_plus_k= In_sg_k-Out_sg_k, 
                                             quantity=quantity_a, a=a)
         b0 = (Out_sg_k * pi_0_plus + phi_EPO_plus )/ In_sg_k
     else:
         b0 = pi_0_plus
-        phi_EPO_minus = compute_phi_EPO_minus(q_minus_k= Out_sg_k-In_sg_k, 
+        phi_EPO_minus = fct_aux.compute_phi_EPO_minus(q_minus_k= Out_sg_k-In_sg_k, 
                                               quantity=quantity_b, 
                                               b=b)
         c0 = (phi_EPO_minus + In_sg_k * pi_0_minus)/Out_sg_k
@@ -921,10 +921,10 @@ def execute_one_learning_step_4_one_period(dico_tperiods_players,
     # compute q_t_plus, q_t_minus
     q_plus_k = 0 if q_plus_k < 0 else q_plus_k
     q_minus_k = 0 if q_minus_k < 0 else q_minus_k
-    phi_EPO_plus = compute_phi_EPO_plus(q_plus_k=q_plus_k, 
+    phi_EPO_plus = fct_aux.compute_phi_EPO_plus(q_plus_k=q_plus_k, 
                                         quantity=args["quantity_a"], 
                                         a=args["a"])
-    phi_EPO_minus = compute_phi_EPO_minus(q_minus_k=q_minus_k, 
+    phi_EPO_minus = fct_aux.compute_phi_EPO_minus(q_minus_k=q_minus_k, 
                                           quantity=args["quantity_b"], 
                                           b=args["b"])
     pi_EPO_plus = round(phi_EPO_plus/q_plus_k, csts.ARRONDI) \
